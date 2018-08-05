@@ -1,0 +1,208 @@
+\makeatletter
+\providecommand*{\input@path}{}
+\g@addto@macro\input@path{{style/}}
+\makeatother
+
+\documentclass[a4paper,11pt,oneside]{kth-mag}
+
+% Formatting packages
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english, swedish]{babel}
+\usepackage{modifications}
+\usepackage[final]{pdfpages}
+
+% packages for tables
+\usepackage{booktabs}
+\usepackage{longtable}
+
+% tikz
+\usepackage{tikz}
+\usetikzlibrary{bayesnet, shapes.geometric, arrows, shadows, positioning, decorations.pathreplacing,angles,quotes, trees}
+% define annotated cube
+\input{tickz_templates/cuboid.tex}
+% define document shape
+\input{tickz_templates/document.tex}
+
+%fix Reference URLs
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true}
+\urlstyle{same}
+
+
+% other packages
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage[caption=false]{subfig}
+\usepackage[flushleft]{threeparttable}
+\usepackage{placeins}
+
+
+%define colors
+\definecolor{mygreen}{RGB}{27,158,119}
+\definecolor{myyellow}{RGB}{255,237,160}
+\definecolor{myorange}{RGB}{254,178,76}
+\definecolor{myred}{RGB}{240,59,32}
+\definecolor{mylightpurple}{RGB}{178,171,210}
+\definecolor{mypurple}{RGB}{94,60,153}
+\definecolor{mylightgreen}{RGB}{153,216,201}
+\definecolor{mylightblue}{RGB}{43,131,186}
+
+
+
+%PGFplot stuff
+\pgfplotsset{compat = 1.10}
+\pgfplotsset{
+    discard if not/.style 2 args={
+        x filter/.code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+            \else
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    }
+}
+\usepgfplotslibrary{statistics}
+
+
+
+% Defined math operators
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+% glossaries package and necessary commands to resolve conflicts
+\let\printglossary\relax
+\let\theglossary\relax
+\let\endtheglossary\relax
+\selectlanguage{english}
+\usepackage[
+nonumberlist,
+	acronym,			
+	shortcuts,% acronym shortcuts
+]{glossaries}
+%\makenoidxglossaries
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Ethics and Implications of the Free-to-Play Business Model in the Game Industry}
+
+
+
+% TODO: Add swedish title
+\foreigntitle{}
+\author{Davide Anghileri}
+\date{\today}
+\blurb{EIT Digital Data Science \\ Minor's Thesis\\ KTH - Royal Institute of Technology\\ Supervisor: Bo Karlson\\
+} 
+
+\trita{}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%BIB SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[style=ieee, backend=biber, sorting=none, isbn=false, doi=false, url=false, maxcitenames=2, mincitenames=1, maxbibnames=8]{biblatex}
+\setlength{\bibitemsep}{1em}     % Abstand zwischen den Literaturangaben
+\setlength{\bibhang}{2em}        % Einzug nach jeweils erster Zeile
+\usepackage[a4paper]{geometry}
+\toks0\expandafter{\biburlsetup} % Settings to remove extra spaces in URLs
+\edef\biburlsetup{\the\toks0 \Urlmuskip =0mu\relax}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\DeclareBibliographyDriver{online}{%this defines what will be printed in the bibliography for entries of type 'online'
+  \usebibmacro{author}
+  \setunit{\addcomma\addspace}%comma+space
+  \usebibmacro{title}
+  \usebibmacro{note+pages}
+  \setunit{\addperiod\addspace}%Period+space after 'Note' field
+  \usebibmacro{url+urldate}
+  \usebibmacro{finentry}}
+
+
+\bibliography{./biblio.bib}
+
+\AtEveryBibitem{%
+  \ifentrytype{book}
+    {\clearfield{url}
+   \clearfield{editor}}
+    {}%
+}
+
+\AtEveryBibitem{%
+  \ifentrytype{incollection}
+    {\clearfield{url}}
+    {}%
+}
+
+\AtEveryBibitem{%
+  \ifentrytype{inproceedings}
+    {\clearfield{eventtitle}}
+    {}%
+}
+
+\AtEveryBibitem{%
+    \clearfield{volume}%
+}
+
+\AtEveryBibitem{%
+  \clearfield{note}%
+}
+ 
+
+
+%%%%%%%%%%%%%%%%%%%%%% END BIB SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%REMOVE COMMENT \includepdf[noautoscale,pages=1]{kth-cover}
+
+\frontmatter
+\pagestyle{empty}
+\removepagenumbers
+\maketitle
+\clearpage
+\selectlanguage{english}
+% Abstracts 
+%REMOVE COMMENT \input{contents/00_frontmatter/00_abstract}
+%REMOVE COMMENT \input{contents/00_frontmatter/01_acknowledgements}
+
+\clearpage
+\tableofcontents*
+\clearpage
+%\printnoidxglossaries 
+% \printnoidxglossary[type=\acronymtype]
+\mainmatter
+\pagestyle{newchap}
+\input{contents/01_introduction/01_introduction}
+\input{contents/02_background/01_background}
+\input{contents/04_results/01_results}
+\input{contents/06_conclusions/01_conclusions}
+
+%------ bibliography ------x
+\printbibliography
+\clearpage
+%REMOVE COMMENT \appendix
+%REMOVE COMMENT \input{contents/a_appendix/01_appendix}
+
+%REMOVE COMMENT \input{Declaration}
+
+
+%REMOVE COMMENT \includepdf[noautoscale,pages=2]{kth-cover}
+
+\end{document}
